@@ -1,2 +1,9 @@
 Started Learning About CloudFlare Workers
 
+I learned about cloudflare workers and how server less functions work , and I also learnt very few thing about aws lambda functions and similarities between cloudflare workers and lambda functions ,
+
+I always wanted to make my own notification system for reminding things that I forget to do
+
+First I thought about twilio and backed out because of the bills and some complications I faced creating a account so then I found out about NTFY.sh then I made my own ntfy server using their docker image and deployed it to azure ,
+
+so now I combined lambda functions with my ntfy server , at first I faced some challanges on package managers and so I made some additional layers for the function and It somewhat worked so now I am going to fix that and experiment more with lambda functions triggers and learn about web hooks
