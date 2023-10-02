@@ -1,0 +1,22 @@
+import requests
+
+def lambda_handler(event, context):
+    # Define the URL and request data
+    url = "http://20.241.11.196/raja"
+    data = "Your NoteBook File Has Been Successfully Executed"
+
+    # Send a POST request with the data
+    response = requests.post(url, data=data)
+
+    # Check the response status code
+    if response.status_code == 200:
+        return {
+            'statusCode': 200,
+            'body': 'Request successful'
+        }
+    else:
+        return {
+            'statusCode': response.status_code,
+            'body': 'Error: Unable to complete the request'
+        }
+
