@@ -1,0 +1,197 @@
+Sure, I can help you with that. Here's a basic example of how you can do this using the `boto3` and `PIL` libraries in Python. This code assumes that you have the necessary permissions to read and write to the S3 bucket.
+
+```python
+import boto3
+from PIL import Image
+import io
+
+def lambda_handler(event, context):
+    s3 = boto3.client('s3')
+
+    # Get bucket name and file key from the event parameter
+    bucket_name = event['Records'][0]['s3']['bucket']['name']
+    key = event['Records'][0]['s3']['object']['key']
+
+    # Get the file object from S3
+    file_obj = s3.get_object(Bucket=bucket_name, Key=key)
+    file_content = file_obj["Body"].read()
+
+    # Open the image with PIL
+    image = Image.open(io.BytesIO(file_content))
+
+    # Crop the image (this is just an example, replace with your own dimensions)
+    cropped_image = image.crop((0, 0, 100, 100))
+
+    # Save the cropped image to a BytesIO object
+    cropped_image_io = io.BytesIO()
+    cropped_image.save(cropped_image_io, format='JPEG')
+
+    # Seek back to the start of the BytesIO object
+    cropped_image_io.seek(0)
+
+    # Upload the cropped image back to S3
+    s3.put_object(Body=cropped_image_io, Bucket=bucket_name, Key='cropped_' + key)
+
+```
+
+This is a simple example and may need to be adjusted based on your specific use case. For instance, you might want to add error handling or logging. Also, please replace the crop dimensions `(0, 0, 100, 100)` with your own values.
+
+Remember to install the necessary libraries in your Lambda function by including them in your deployment package or a Lambda layer. You can do this by creating a `requirements.txt` file with `boto3` and `PIL` listed in it and running `pip install -r requirements.txt -t /path/to/project-dir`. Then you can create a deployment package by zipping the contents of the project directory.
+
+Please let me know if you need further assistance! 😊
+
+
+
+
+
+
+
+
+
+
+
+Sure, I'd be happy to explain the code to you:
+
+```python
+import boto3
+from PIL import Image
+import io
+```
+These lines are importing the necessary libraries. `boto3` is the Amazon Web Services (AWS) SDK for Python, which allows Python developers to write software that makes use of AWS services like Amazon S3. `PIL` is the Python Imaging Library which adds image processing capabilities to your Python interpreter. `io` provides the Python interfaces to stream handling.
+
+```python
+def lambda_handler(event, context):
+```
+This line defines the entry point for a Lambda function. AWS Lambda invokes this function using an event object as a parameter. The event parameter contains information from the invoking service.
+
+```python
+    s3 = boto3.client('s3')
+```
+This line creates a low-level, service-specific client by AWS SDK (`boto3`). Here we're creating a client for Amazon S3.
+
+```python
+    bucket_name = event['Records'][0]['s3']['bucket']['name']
+    key = event['Records'][0]['s3']['object']['key']
+```
+These lines are extracting the bucket name and the key name of the uploaded file from the event object. The event object contains information about the state of the invoking service (S3 in this case) at the time of invocation.
+
+```python
+    file_obj = s3.get_object(Bucket=bucket_name, Key=key)
+    file_content = file_obj["Body"].read()
+```
+These lines are getting the file object from S3 and reading its content into a variable.
+
+```python
+    image = Image.open(io.BytesIO(file_content))
+```
+This line is creating an image object using PIL's `Image.open()` function. It's reading the file content from a bytes stream.
+
+```python
+    cropped_image = image.crop((0, 0, 100, 100))
+```
+This line is cropping the image to a 100x100 square at the top left corner of the image (0, 0). You can replace these values with your own dimensions.
+
+```python
+    cropped_image_io = io.BytesIO()
+    cropped_image.save(cropped_image_io, format='JPEG')
+```
+These lines are saving the cropped image to a BytesIO object in memory, in JPEG format.
+
+```python
+    cropped_image_io.seek(0)
+```
+This line is moving back to the start of the BytesIO object. This is necessary because when you save an image to it, the "cursor" is left at the end of the BytesIO object.
+
+```python
+    s3.put_object(Body=cropped_image_io, Bucket=bucket_name, Key='cropped_' + key)
+```
+This line is uploading the cropped image back to S3 with a new key name that starts with 'cropped_'.
+
+I hope this helps! Let me know if you have any other questions.
+
+
+
+
+
+
+
+
+
+
+A `BytesIO` object in Python is a type of I/O stream that operates in memory, rather than reading from or writing to a disk file. It manipulates binary data in memory using the same API as reading and writing files¹. 
+
+This means you can use a `BytesIO` object to hold binary data in your program, just like you would use a file. This can be useful for tasks like sending a photo to a Telegram Bot or getting configuration from Netflix Config Server¹.
+
+Here's an example of how you might use it:
+
+```python
+import io
+
+# Create a BytesIO object and write some binary data to it
+data = io.BytesIO()
+data.write(b'Hello, world!')
+
+# Now we can read from the 'data' object as if it were a file.
+# First, go back to the beginning of the 'file':
+data.seek(0)
+
+# Then read the data:
+print(data.read())
+```
+
+In this example, `data` is a `BytesIO` object that behaves just like a file. You can write to it and read from it. But instead of reading and writing data on disk, all operations are done in memory¹.
+
+It's important to note that the data stored in a `BytesIO` object is lost once the object is destroyed or goes out of scope, just like any other object in Python⁴.
+
+Source: Conversation with Bing, 06/10/2023
+(1) Python StringIO And BytesIO Example. https://www.code-learner.com/python-stringio-and-bytesio-example/.
+(2) Difference between `open` and `io.BytesIO` in binary streams. https://stackoverflow.com/questions/42800250/difference-between-open-and-io-bytesio-in-binary-streams.
+(3) . https://bing.com/search?q=BytesIO+object+in+Python.
+(4) Python io - BytesIO, StringIO | DigitalOcean. https://www.digitalocean.com/community/tutorials/python-io-bytesio-stringio.
+(5) io — Core tools for working with streams - Python. https://docs.python.org/3/library/io.html.
+(6) undefined. https://stackoverflow.com/questions/39799009/creating-bytesio-object.
+
+
+
+
+AIzaSyCzGWEae-HizK5u242yV7eK71Sky6Ybv1s
+
+
+
+
+
+curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json  https://vision.googleapis.com/v1/images:annotate?key=${API_KEY} -o landmark-response.json
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import boto3
+
+def lambda_handler(event, context):
+    # Create a session using your AWS credentials
+    session = boto3.Session(
+        aws_access_key_id='AKIAQK7H24WELV5WJ5VM',
+        aws_secret_access_key='vEzryHQXCpOtuzu9fjqlR2qhtTEGvpA4oMyfjyrH',
+    )
+
+    # Create an S3 resource object using the session
+    s3 = session.resource('s3')
+
+    # List all the buckets
+    bucket_list = [bucket.name for bucket in s3.buckets.all()]
+    
+    return {
+        'statusCode': 200,
+        'body': bucket_list
+    }
+
