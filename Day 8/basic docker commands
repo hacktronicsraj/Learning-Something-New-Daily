@@ -1,0 +1,61 @@
+Check Docker Version:
+
+bash
+
+docker --version
+Pull an Image (e.g., Ubuntu):
+
+bash
+
+docker pull ubuntu
+List Downloaded Images:
+
+bash
+
+docker images
+
+Run a Container:
+
+bash
+
+docker run -it ubuntu /bin/bash
+List Running Containers:
+
+bash
+
+docker ps
+List All Containers (including stopped):
+
+bash
+
+docker ps -a
+Stop a Running Container (replace <container_id> with the actual container ID):
+
+bash
+
+docker stop <container_id>
+Remove a Container (replace <container_id> with the actual container ID):
+
+bash
+
+docker rm <container_id>
+Remove an Image (replace <image_id> with the actual image ID):
+
+bash
+
+docker rmi <image_id>
+Pull and Run an Image in One Command (e.g., Nginx web server):
+
+bash
+
+docker run -d -p 80:80 nginx
+View Container Logs (replace <container_id> with the actual container ID):
+
+bash
+
+docker logs <container_id>
+Execute a Command in a Running Container (e.g., execute a shell in a running Ubuntu container):
+
+bash
+
+docker exec -it <container_id> /bin/bash
