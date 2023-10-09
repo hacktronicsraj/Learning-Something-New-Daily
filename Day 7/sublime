@@ -154,7 +154,7 @@ Source: Conversation with Bing, 06/10/2023
 
 
 
-AIzaSyCzGWEae-HizK5u242yV7eK71Sky6Ybv1s
+
 
 
 
@@ -180,8 +180,8 @@ import boto3
 def lambda_handler(event, context):
     # Create a session using your AWS credentials
     session = boto3.Session(
-        aws_access_key_id='AKIAQK7H24WELV5WJ5VM',
-        aws_secret_access_key='vEzryHQXCpOtuzu9fjqlR2qhtTEGvpA4oMyfjyrH',
+        aws_access_key_id='',
+        aws_secret_access_key='',
     )
 
     # Create an S3 resource object using the session
