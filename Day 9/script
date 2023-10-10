@@ -1,0 +1,31 @@
+import boto3
+from PIL import Image
+import logging
+
+def lambda_handler(event, context):
+    logging.info(event)
+    # Get the S3 bucket and object key of the uploaded image.
+    s3_bucket = event['Records'][0]['s3']['bucket']['name']
+    s3_object_key = event['Records'][0]['s3']['object']['key']
+
+    # Get the S3 client.
+    s3 = boto3.client('s3')
+
+    # Download the image from S3.
+    with open('/tmp/image.jpg', 'wb') as f:
+        s3.download_fileobj(s3_bucket, s3_object_key, f)
+
+    # Process the image.
+    # For example, to resize the image to 100x100 pixels and convert it to JPEG format:
+
+    image = Image.open('/tmp/image.jpg')
+    image = image.resize((100, 100))
+    image.save('/tmp/image_resized.jpg', 'JPEG')
+
+    # Upload the processed image to S3.
+    s3.upload_file('/tmp/image_resized.jpg', s3_bucket, s3_object_key + '.resized.jpg')
+
+    return {
+        'statusCode': 200,
+        'body': 'Image processed successfully.'
+    }
